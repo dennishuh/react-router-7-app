@@ -4,7 +4,7 @@ export default [
   index("routes/home.tsx"),
   route("about", "routes/about.tsx"),
   ...prefix("countries", [
-    route("", "routes/countries.tsx"),
+    index("routes/countries.tsx"),
     route(":countryName", "routes/country.tsx")
   ]),
   
