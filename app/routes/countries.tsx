@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
 import type { Route } from './+types/countries';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 
 export async function clientLoader() {
 	const res = await fetch('https://restcountries.com/v3.1/all');
@@ -12,14 +12,17 @@ export default function Countries({ loaderData }: Route.ComponentProps) {
 	const [search, setSearch] = useState<string>('');
 	const [region, setRegion] = useState<string>('');
 
-	const filteredCountries = loaderData.filter((country: any) => {
-		const matchesRegion =
-			!region || country.region.toLowerCase() === region.toLowerCase();
-		const matchesSearch =
-			!search ||
-			country.name.common.toLowerCase().includes(search.toLowerCase());
-		return matchesSearch && matchesRegion;
-	});
+	const filteredCountries = useMemo(
+		loaderData.filter((country: any) => {
+			const matchesRegion =
+				!region || country.region.toLowerCase() === region.toLowerCase();
+			const matchesSearch =
+				!search ||
+				country.name.common.toLowerCase().includes(search.toLowerCase());
+			return matchesSearch && matchesRegion;
+		}),
+		[search, region, loaderData]
+	);
 
 	return (
 		<div className="p-6">
