@@ -13,15 +13,16 @@ export default function Countries({ loaderData }: Route.ComponentProps) {
 	const [region, setRegion] = useState<string>('');
 
 	const filteredCountries = useMemo(
-		loaderData.filter((country: any) => {
-			const matchesRegion =
-				!region || country.region.toLowerCase() === region.toLowerCase();
-			const matchesSearch =
-				!search ||
-				country.name.common.toLowerCase().includes(search.toLowerCase());
-			return matchesSearch && matchesRegion;
-		}),
-		[search, region, loaderData]
+		() =>
+			loaderData.filter((country: any) => {
+				const matchesRegion =
+					!region || country.region.toLowerCase() === region.toLowerCase();
+				const matchesSearch =
+					!search ||
+					country.name.common.toLowerCase().includes(search.toLowerCase());
+				return matchesSearch && matchesRegion;
+			}),
+		[loaderData, search, region]
 	);
 
 	return (
